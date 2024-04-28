@@ -10,6 +10,7 @@ from PIL import Image
 from streamlit_option_menu import option_menu
 import requests
 from streamlit_lottie import st_lottie 
+import os
 
 
 # -------------------------------------------------------------------------------------------
@@ -33,7 +34,7 @@ with st.sidebar:
     
 # MYSQL CREDENTIALS  
 u_name = 'root'
-u_pass = '1000Shaik#1'
+u_pass = os.environ['MYSQL_PASSWORD']
 host_name = 'localhost'
 port = 3306
 database_name = 'youtube'
@@ -384,7 +385,9 @@ if selected == "Q&A":
                   "10. Which Top 100 videos have the highest number of comments, and what are their corresponding channel names?"]
                       )
     
-    if questions == '1. What are the Names of all the videos and their corresponding channels?':
+    find_btn = st.button("FIND")
+    
+    if questions == '1. What are the Names of all the videos and their corresponding channels?' and find_btn:
         mycursor.execute("""SELECT video_title, channel_name
                             FROM video_details 
                             ORDER BY channel_name
@@ -392,7 +395,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == '2. Which Top 5 channels have the most number of videos, and how many videos do they have?':
+    elif questions == '2. Which Top 5 channels have the most number of videos, and how many videos do they have?' and find_btn:
         mycursor.execute("""SELECT channel_name, video_count
                             FROM channel_details
                             ORDER BY video_count DESC
@@ -401,7 +404,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == "3. What are the top 10 most viewed videos and their respective channel?":
+    elif questions == "3. What are the top 10 most viewed videos and their respective channel?" and find_btn:
         mycursor.execute("""SELECT channel_name, video_title, video_view_count
                             FROM video_details 
                             ORDER BY video_view_count DESC
@@ -410,7 +413,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == "4. How many comments were made on each video, and what are their corresponding video names?":
+    elif questions == "4. How many comments were made on each video, and what are their corresponding video names?" and find_btn:
         mycursor.execute("""SELECT video_title, video_comment_count
                             FROM video_details
                             ORDER BY video_comment_count DESC
@@ -418,7 +421,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == "5. Which Top 10 videos have the highest number of likes, and what are their corresponding channel names?":
+    elif questions == "5. Which Top 10 videos have the highest number of likes, and what are their corresponding channel names?" and find_btn:
         mycursor.execute("""SELECT channel_name, video_title, video_like_count
                             FROM video_details
                             ORDER BY video_like_count DESC
@@ -427,7 +430,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
             
-    elif questions == "6. What is the total number of likes for each video, and what are  their corresponding video names?":
+    elif questions == "6. What is the total number of likes for each video, and what are  their corresponding video names?" and find_btn:
         mycursor.execute("""SELECT video_title, video_like_count
                             FROM video_details
                             ORDER BY video_like_count DESC;
@@ -435,7 +438,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == "7. What is the total number of views for each channel, and what are their corresponding channel names?":
+    elif questions == "7. What is the total number of views for each channel, and what are their corresponding channel names?" and find_btn:
         mycursor.execute("""SELECT channel_name, channel_views
                             FROM channel_details
                             ORDER BY channel_views DESC;
@@ -443,7 +446,7 @@ if selected == "Q&A":
         df = pd.DataFrame(mycursor.fetchall(),columns=mycursor.column_names)
         st.write(df)
         
-    elif questions == "8. What are the names of all the channels that have published videos in the year 2022?":
+    elif questions == "8. What are the names of all the channels that have published videos in the year 2022?" and find_btn:
         mycursor.execute("""SELECT distinct(channel_name)
                             FROM video_details
                             WHERE video_published_at LIKE "2022%"
@@ -452,7 +455,7 @@ if selected == "Q&A":
         st.write(df)
         
         
-    elif questions == "9. What is the average duration of all videos in each channel, and what are their corresponding channel names?":
+    elif questions == "9. What is the average duration of all videos in each channel, and what are their corresponding channel names?" and find_btn:
         mycursor.execute("""SELECT channel_name, avg(video_duration)
                             FROM video_details
                             GROUP BY channel_name
@@ -463,7 +466,7 @@ if selected == "Q&A":
         
 
 
-    elif questions == "10. Which Top 100 videos have the highest number of comments, and what are their corresponding channel names?":
+    elif questions == "10. Which Top 100 videos have the highest number of comments, and what are their corresponding channel names?" and find_btn:
         mycursor.execute("""SELECT channel_name, video_title, video_comment_count
                             FROM video_details
                             ORDER BY video_comment_count DESC
